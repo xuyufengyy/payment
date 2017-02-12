@@ -21,7 +21,7 @@ public interface PaySettingDao extends JpaRepository<PaySetting, Long> {
      * 查询系统设置
      * @param propertyKey 属性key
      * @param isActive 是否生效
-     * @return
+     * @return PaySetting
      */
     PaySetting findByPropertyKeyAndIsActive(String propertyKey, Integer isActive);
 }

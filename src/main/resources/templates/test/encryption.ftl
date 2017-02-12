@@ -24,7 +24,7 @@
 <div>
     <h3>首次支付请求参数加密</h3>
     <div>
-        <form name="subForm" action="/v1/test/encryption" method="get">
+        <form name="subForm" action="/test/encryption" method="get">
             <table>
                 <tr>
                     <th>支付渠道【payChannel】：</th>

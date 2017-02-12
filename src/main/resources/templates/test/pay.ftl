@@ -11,7 +11,7 @@
 <div class="mright">
     <h3>首次支付请求</h3>
     <div class="mrmain">
-        <form name="subForm" action="/v1/payment/generate_pay_url" method="get" style="margin:0px">
+        <form name="subForm" action="/payment/generate_pay_url" method="get" style="margin:0px">
             <table>
                 <tbody>
                 <tr>

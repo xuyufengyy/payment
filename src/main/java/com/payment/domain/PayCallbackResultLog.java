@@ -1,23 +1,26 @@
 /**
- * @(#)PayResultLog.java
+ * @(#)PayCallbackResultLog.java
  * Description:
  * Version :	1.0
  * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
- * Entity - 支付结果日志
+ * Entity - 支付回调结果日志
  *
  * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 @Entity
-@Table(name = "pay_result_log")
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "pay_result_log_sequence")
-public class PayResultLog extends BaseEntity{
+@Table(name = "pay_callback_result_log")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "pay_callback_result_log_sequence")
+public class PayCallbackResultLog extends BaseEntity{
 
     private static final long serialVersionUID = 1427491389928068090L;
 

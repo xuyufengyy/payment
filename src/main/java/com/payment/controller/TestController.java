@@ -6,9 +6,11 @@
  */
 package com.payment.controller;
 
+import com.payment.domain.paybean.PayParameter;
 import com.payment.domain.paybean.QueryOrderStatus;
 import com.payment.route.PaymentService;
 import com.payment.service.setting.PaySettingService;
+import com.payment.utils.Tool;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Controller - 测试
@@ -37,21 +40,20 @@ public class TestController {
     @Autowired
     private PaySettingService sysSettingService;
 
-    @RequestMapping(value = "/v1/test/pay", method= RequestMethod.GET)
+    @RequestMapping(value = "/test/pay", method= RequestMethod.GET)
     public String pay(){
         return "test/encryption";
     }
 
     /**
      * 支付--将支付参数加密
-     * @author xuminghua 2016/05/11
      * @return
      */
-    @RequestMapping(value = "/v1/test/encryption", method= RequestMethod.GET)
-    public String encryption(HttpServletRequest request, Model model){
+    @RequestMapping(value = "/test/encryption", method= RequestMethod.GET)
+    public String encryption(PayParameter payParameter, Model model){
 
-        //获取参数
-        String urlParamter = request.getQueryString();
+        Map<String, String> map = Tool.transBean2Map(payParameter);
+        String urlParamter = Tool.createLinkString(map, "&");//数组排序后生成字符串
         logger.info("String before encryption:" + urlParamter);
         if(StringUtils.isBlank(urlParamter)){
             model.addAttribute("message", "加密参数不存在");
@@ -66,17 +68,16 @@ public class TestController {
         return "test/pay";
     }
 
-    @RequestMapping(value = "/v1/test/query", method= RequestMethod.GET)
+    @RequestMapping(value = "/test/query", method= RequestMethod.GET)
     public String query(){
         return "test/query";
     }
 
     /**
      * 支付--订单状态查询
-     * @author xuminghua 2016/05/13
      * @return
      */
-    @RequestMapping(value = "/v1/test/query_order_status", method= RequestMethod.POST)
+    @RequestMapping(value = "/test/query_order_status", method= RequestMethod.POST)
     public String queryOrder(String payChannel, String payProduct, String orderNumber, Model model){
 
 

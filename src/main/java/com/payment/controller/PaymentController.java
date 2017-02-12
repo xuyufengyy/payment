@@ -8,11 +8,13 @@ package com.payment.controller;
 
 import com.payment.domain.paybean.GeneratePayUrl;
 import com.payment.domain.paybean.PayCallback;
+import com.payment.domain.paybean.PayParameter;
 import com.payment.domain.paybean.QueryOrderStatus;
 import com.payment.route.PaymentService;
 import com.payment.service.setting.PaySettingService;
 import com.payment.utils.Tool;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +43,6 @@ public class PaymentController {
     @Value("${umpay.wap.pay.url.name}")
     private String umpayWapPayUrl;
 
-    @Value("${pay.flag}")
-    private boolean payFlag;
-
     @Autowired
     private PaySettingService paySettingService;
 
@@ -52,10 +51,9 @@ public class PaymentController {
 
     /**
      * 支付--生成支付地址
-     * @author xuminghua 2016/05/11
      * @return
      */
-    @RequestMapping(value = "/v1/payment/generate_pay_url", method= RequestMethod.GET)
+    @RequestMapping(value = "/payment/generate_pay_url", method= RequestMethod.GET)
     public String generatePayUrl(HttpServletRequest request, Model model){
 
         //获取参数
@@ -66,50 +64,24 @@ public class PaymentController {
             return "payment/pay_error";
         }
 
-        //将字符串转成map (str1=1&str2=2)
+        //将字符串转成map
         Map<String, Object> paramters = Tool.stringConvertMap(urlParamter, Tool.getInputCharset());
         String encryptionText = paramters.get("encryptionText").toString();
-
-//        Map<String, Object> paramters2 = Tool.stringConvertMap(encryptionText, Tool.getInputCharset());
-//        String payChannel = paramters2.get("payChannel").toString();
-//        String payProduct = paramters2.get("payProduct").toString();
 
         //解密--生成请求参数串
         String decryptText = paySettingService.decrypt(encryptionText);
 
         Map<String, Object> map = Tool.stringConvertMap(decryptText, null);
         logger.info("map===============" + map.toString());
-        String orderNumber = map.get("orderNumber").toString();//必填
-        String amount = map.get("amount").toString();//必填
-        String content = null;
-        String payCallbackUrl = null;
+
+        PayParameter payParameter = new PayParameter();
         try{
-            //将内容与回调地址decode
-            content = URLDecoder.decode(map.get("content").toString(), Tool.getInputCharset());
-            payCallbackUrl = URLDecoder.decode(map.get("payCallbackUrl").toString(), Tool.getInputCharset());
+            BeanUtils.populate(payParameter, map);
         }catch (Exception ex){
             ex.printStackTrace();
         }
 
-        Map<String, String> parameters = new HashMap<String, String>();
-        Object object = map.get("parameters");
-        if(object != null && !"".equals(object) && !"null".equals(object)){
-            parameters = (Map) object;
-        }
-
-        //将元转成分
-        BigDecimal actualAmount = new BigDecimal(amount);
-        Double totalAmountDouble = actualAmount.doubleValue()*100;
-
-        long totalAmount = 1L;
-        logger.info("payFlag============="+payFlag);
-
-        //当payFlag为false时为1分钱
-        if(payFlag){
-            totalAmount = totalAmountDouble.longValue();//订单实付款
-        }
-
-        GeneratePayUrl generatePayUrl = paymentService.generatePayUrl(null, null, orderNumber, totalAmount, content, payCallbackUrl, parameters);
+        GeneratePayUrl generatePayUrl = paymentService.generatePayUrl(payParameter);
 
         String url = "";
         if(generatePayUrl.isSuccess()){
@@ -123,7 +95,6 @@ public class PaymentController {
 
     /**
      * 支付--异步回调
-     * @author xuminghua 2016/05/12
      * @return
      */
     @RequestMapping(value = "/v1/payment/notify_callback", method= RequestMethod.GET)
@@ -157,8 +128,7 @@ public class PaymentController {
     }
 
     /**
-     * 支付--同步回调(联动优势使用)
-     * @author xuminghua 2016/05/12
+     * 支付--同步回调
      * @return
      */
     @RequestMapping(value = "/v1/payment/ret_callback", method= RequestMethod.POST)

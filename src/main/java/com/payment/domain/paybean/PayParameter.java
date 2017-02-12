@@ -6,7 +6,6 @@
  */
 package com.payment.domain.paybean;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,17 +17,17 @@ import java.util.Map;
  */
 public class PayParameter {
 
-    /** 支付渠道 */
+    /** 支付渠道 01 ios客户端， 02 android客户端， 03 wap，04 web */
     private String payChannel;
 
-    /** 支付产品 */
+    /** 支付产品 00 测试，01 支付宝，02 微支付，03 联动优势收银台 */
     private String payProduct;
 
     /** 订单号 */
     private String orderNumber;
 
     /** 订单金额(元) */
-    private BigDecimal amount;
+    private String amount;
 
     /** 描述 */
     private String content;
@@ -63,11 +62,11 @@ public class PayParameter {
         this.orderNumber = orderNumber;
     }
 
-    public BigDecimal getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

@@ -67,7 +67,7 @@ public class LogService {
      * @param orderNumber           订单号
      * @param amount                订单金额
      * @param content               描述
-     * @param payCallbackUrl           支付回调地址
+     * @param payCallbackUrl        支付回调地址
      * @param parameter             参数集合
      */
     @Transactional
@@ -137,7 +137,7 @@ public class LogService {
     @Transactional
     public void payResultLog(String payChannel, String payProduct, String orderNumber, Long amount, String content, String parameter,
                                  Integer isSuccess, String errorCode, String errorDescription, Integer type){
-        PayResultLog payResultLog = payResultLogDao.findByOrderNumberAndType(orderNumber, type);
+        PayResultLog payResultLog = payResultLogDao.findByOrderNumber(orderNumber);
         if (payResultLog == null) {
             savePayResultLog(payChannel, payProduct, orderNumber, amount, content, parameter, isSuccess, errorCode, errorDescription, type);
         } else {
@@ -151,7 +151,6 @@ public class LogService {
             payResultLog.setIsSuccess(isSuccess);
             payResultLog.setErrorCode(errorCode);
             payResultLog.setErrorDescription(errorDescription);
-            payResultLog.setType(type);
             logger.info(" update pay result log success ! ");
         }
     }
@@ -182,7 +181,6 @@ public class LogService {
         payResultLog.setIsSuccess(isSuccess);
         payResultLog.setErrorCode(errorCode);
         payResultLog.setErrorDescription(errorDescription);
-        payResultLog.setType(type);
         payResultLogDao.save(payResultLog);
         logger.info(" save pay result log success ! ");
     }

@@ -8,9 +8,9 @@
     <title>支付测试</title>
 </head>
 <body>
-<div class="mright">
+<div>
     <h3>查询订单结果</h3>
-    <div class="mrmain">
+    <div>
         <table>
             <tbody>
             <tr>

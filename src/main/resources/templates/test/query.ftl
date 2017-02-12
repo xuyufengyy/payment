@@ -8,23 +8,23 @@
     <title>支付测试</title>
 </head>
 <body>
-<div class="mright">
+<div>
     <h3>查询订单</h3>
-    <div class="mrmain">
+    <div>
         <form name="subForm" action="/v1/test/query_order_status" method="post" style="margin:0px">
             <table>
                 <tbody>
                 <tr>
                     <th>支付渠道【payChannel】:</th>
-                    <td><input style="background:#ADADAD" type=text class="wtxt" name="payChannel" value="03"/> <span>*</span></td>
+                    <td><input style="background:#ADADAD" type=text name="payChannel" value="03"/> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>支付产品【payProduct】：</th>
-                    <td><input style="background:#ADADAD" type=text class="wtxt" name="payProduct" value="03"/> <span>*</span></td>
+                    <td><input style="background:#ADADAD" type=text name="payProduct" value="03"/> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>订单号【orderNumber】：</th>
-                    <td ><input type="text" class="wtxt" name="orderNumber" value=""/> <span>*</span></td>
+                    <td ><input type="text" name="orderNumber" value=""/> <span>*</span></td>
                 </tr>
                 <tr>
                     <th></th>
