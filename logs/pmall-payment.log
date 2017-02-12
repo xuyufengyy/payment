@@ -1,0 +1,66 @@
+15:06:27.773 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.2.4.Final
+15:06:32.344 [main] INFO  com.payment.PltxApplication - Starting PltxApplication on coombedeMac-mini.local with PID 3953 (/Users/xuyufengyy/ideaWorkspace/payment/target/classes started by xuyufengyy in /Users/xuyufengyy/ideaWorkspace/payment)
+15:06:32.345 [main] INFO  com.payment.PltxApplication - No active profile set, falling back to default profiles: default
+15:06:32.404 [main] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@704deff2: startup date [Wed Feb 08 15:06:32 CST 2017]; root of context hierarchy
+15:06:34.267 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$89bd0878] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:06:35.069 [main] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8083 (http)
+15:06:35.090 [main] INFO  o.a.catalina.core.StandardService - Starting service Tomcat
+15:06:35.091 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.0.33
+15:06:35.276 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+15:06:35.276 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2873 ms
+15:06:35.767 [localhost-startStop-1] INFO  o.s.b.c.e.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+15:06:35.776 [localhost-startStop-1] INFO  o.s.b.c.e.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+15:06:35.777 [localhost-startStop-1] INFO  o.s.b.c.e.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+15:06:35.777 [localhost-startStop-1] INFO  o.s.b.c.e.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+15:06:35.777 [localhost-startStop-1] INFO  o.s.b.c.e.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+15:06:35.896 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Started.
+15:06:36.860 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default'
+15:06:36.881 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+15:06:37.043 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {4.3.11.Final}
+15:06:37.048 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+15:06:37.051 [main] INFO  org.hibernate.cfg.Environment - HHH000021: Bytecode provider name : javassist
+15:06:37.544 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+15:06:37.666 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+15:06:37.997 [main] INFO  o.h.h.i.a.ASTQueryTranslatorFactory - HHH000397: Using ASTQueryTranslatorFactory
+15:06:38.492 [main] INFO  o.h.tool.hbm2ddl.SchemaUpdate - HHH000228: Running hbm2ddl schema update
+15:06:38.493 [main] INFO  o.h.tool.hbm2ddl.SchemaUpdate - HHH000102: Fetching database metadata
+15:06:38.524 [main] INFO  o.h.tool.hbm2ddl.SchemaUpdate - HHH000396: Updating schema
+15:06:38.697 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000261: Table found: pltx-pub-develop.ex_pay_callback_log
+15:06:38.697 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000037: Columns: [order_number, id, state, create_date, modify_date, parameters, pay_product]
+15:06:38.698 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000108: Foreign keys: []
+15:06:38.698 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000126: Indexes: [primary]
+15:06:38.861 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000261: Table found: pltx-pub-develop.ex_pay_log
+15:06:38.862 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000037: Columns: [pay_callback_url, pay_note, order_number, pay_amount, pay_parameter, pay_channel, id, state, create_date, modify_date, pay_product]
+15:06:38.862 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000108: Foreign keys: []
+15:06:38.862 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000126: Indexes: [primary]
+15:06:39.012 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000261: Table found: pltx-pub-develop.ex_pay_result_log
+15:06:39.013 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000037: Columns: [pay_note, order_number, pay_amount, pay_parameter, is_success, type, pay_product, error_description, pay_channel, error_code, id, state, create_date, modify_date]
+15:06:39.013 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000108: Foreign keys: []
+15:06:39.013 [main] INFO  o.h.tool.hbm2ddl.TableMetadata - HHH000126: Indexes: [primary]
+15:06:39.014 [main] INFO  o.h.tool.hbm2ddl.SchemaUpdate - HHH000232: Schema update complete
+15:06:40.276 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@704deff2: startup date [Wed Feb 08 15:06:32 CST 2017]; root of context hierarchy
+15:06:40.402 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/payment/generate_pay_url],methods=[GET]}" onto public java.lang.String com.payment.controller.PaymentController.generatePayUrl(java.lang.String,java.lang.String,java.lang.String,org.springframework.ui.Model)
+15:06:40.403 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/payment/notify_callback],methods=[GET]}" onto public java.lang.String com.payment.controller.PaymentController.notifyCallback(javax.servlet.http.HttpServletRequest,org.springframework.ui.Model)
+15:06:40.404 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/payment/ret_callback],methods=[POST]}" onto public java.lang.String com.payment.controller.PaymentController.retCallback(javax.servlet.http.HttpServletRequest,org.springframework.ui.Model)
+15:06:40.407 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+15:06:40.408 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+15:06:40.467 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+15:06:40.467 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+15:06:40.598 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+15:06:41.096 [main] INFO  o.s.w.s.v.f.FreeMarkerConfigurer - ClassTemplateLoader for Spring macros added to FreeMarker configuration
+15:06:41.327 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+15:06:41.328 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter - Bean with name 'primaryDataSource' has been autodetected for JMX exposure
+15:06:41.354 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter - Located MBean 'primaryDataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=primaryDataSource,type=HikariDataSource]
+15:06:41.409 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+15:06:41.424 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+15:06:41.450 [main] INFO  o.a.tomcat.util.net.NioSelectorPool - Using a shared selector for servlet write/read
+15:06:41.483 [main] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer - Tomcat started on port(s): 8083 (http)
+15:06:41.494 [main] INFO  com.payment.PltxApplication - Started PltxApplication in 29.635 seconds (JVM running for 35.692)
+15:06:58.188 [Thread-2] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@704deff2: startup date [Wed Feb 08 15:06:32 CST 2017]; root of context hierarchy
+15:06:58.195 [Thread-2] INFO  o.s.j.e.a.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+15:06:58.197 [Thread-2] INFO  o.s.j.e.a.AnnotationMBeanExporter - Unregistering JMX-exposed beans
+15:06:58.203 [Thread-2] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+15:06:58.204 [Thread-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Close initiated...
+15:06:58.211 [Thread-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Closed.
