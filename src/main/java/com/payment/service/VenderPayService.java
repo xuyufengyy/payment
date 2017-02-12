@@ -2,7 +2,7 @@
  * @(#)PayService.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.service;
 
@@ -10,13 +10,12 @@ import com.payment.domain.paybean.PayCallback;
 import com.payment.domain.paybean.VenderGeneratePayUrl;
 import com.payment.domain.paybean.VenderPayServiceAnnounce;
 import com.payment.domain.paybean.VenderQueryOrderStatus;
-
 import java.util.Map;
 
 /**
  * Service - 支付服务接口
  *
- * @author	xuminghua 2016/5/12
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 public interface VenderPayService {

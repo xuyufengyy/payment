@@ -1,6 +1,5 @@
 package com.payment;
 
-import com.payment.utils.ProjectEnvironment;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,8 +21,6 @@ public class PltxApplication {
      * 4. 也支持用@Configuration标注的类配置三方包.
      */
     public static void main(String[] args) throws Exception {
-        //初始化环境类型
-        ProjectEnvironment.init(args);
         SpringApplication.run(PltxApplication.class, args);
     }
 }

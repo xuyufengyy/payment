@@ -2,7 +2,7 @@
  * @(#)VenderPayManage.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.domain.paybean;
 
@@ -10,15 +10,14 @@ import com.payment.service.VenderPayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 绑定,解绑service
  *
- *
- * @author	xuminghua 2016/7/21
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 @Component

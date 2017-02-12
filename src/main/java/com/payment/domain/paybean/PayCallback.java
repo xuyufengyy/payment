@@ -2,7 +2,7 @@
  * @(#)PayCallback.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.domain.paybean;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Entity - 回调数据处理结果
  *
- * @author	xuminghua 2016/5/13
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 public class PayCallback extends BaseRet {

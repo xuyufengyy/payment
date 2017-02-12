@@ -2,14 +2,13 @@
  * @(#)BaseEntity.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 import javax.validation.groups.Default;
 import java.io.Serializable;
@@ -18,7 +17,7 @@ import java.util.Date;
 /**
  * Entity-基类
  *
- * @author	xuminghua 2016/05/16
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 @JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, creatorVisibility = Visibility.NONE)
@@ -36,8 +35,6 @@ public abstract class BaseEntity implements Serializable {
 
     /** "修改日期"属性名称 */
     public static final String MODIFY_DATE_PROPERTY_NAME = "modifyDate";
-
-
 
     /**
      * 保存验证组

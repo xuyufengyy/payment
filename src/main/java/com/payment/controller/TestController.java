@@ -2,15 +2,13 @@
  * @(#)TestController.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.controller;
 
 import com.payment.domain.paybean.QueryOrderStatus;
 import com.payment.route.PaymentService;
-import com.payment.service.setting.SysSettingService;
-import com.payment.utils.Base64;
-import com.payment.utils.DesUtils;
+import com.payment.service.setting.PaySettingService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Controller - 测试
  *
- * @author	xuminghua 2016/7/22
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 @Controller
@@ -38,9 +35,9 @@ public class TestController {
     private PaymentService paymentService;
 
     @Autowired
-    private SysSettingService sysSettingService;
+    private PaySettingService sysSettingService;
 
-//    @RequestMapping(value = "/v1/test/pay", method= RequestMethod.GET)
+    @RequestMapping(value = "/v1/test/pay", method= RequestMethod.GET)
     public String pay(){
         return "test/encryption";
     }
@@ -50,32 +47,26 @@ public class TestController {
      * @author xuminghua 2016/05/11
      * @return
      */
-//    @RequestMapping(value = "/v1/test/encryption", method= RequestMethod.GET)
+    @RequestMapping(value = "/v1/test/encryption", method= RequestMethod.GET)
     public String encryption(HttpServletRequest request, Model model){
 
-        Map<String, String> map2 = sysSettingService.findByPropertyKeyAndIsActiveAndState("pay", 1, 0);
-        if(map2.isEmpty()){
-            model.addAttribute("message", "加密key不存在");
-            return "payment/pay_error";
-        }
-
-        String secretKey = map2.get("secretKey");
-        byte[] enk = DesUtils.hex(secretKey);
+        //获取参数
         String urlParamter = request.getQueryString();
         logger.info("String before encryption:" + urlParamter);
         if(StringUtils.isBlank(urlParamter)){
             model.addAttribute("message", "加密参数不存在");
             return "payment/pay_error";
         }
-        byte[] encoded = DesUtils.encryptMode(enk, urlParamter.getBytes());
-        String encryptionText = Base64.encode(encoded);
+
+        //加密
+        String encryptionText = sysSettingService.encryption(urlParamter);
         logger.info("Encrypted string:" + encryptionText);
 
         model.addAttribute("encryptionText", encryptionText);
         return "test/pay";
     }
 
-//    @RequestMapping(value = "/v1/test/query", method= RequestMethod.GET)
+    @RequestMapping(value = "/v1/test/query", method= RequestMethod.GET)
     public String query(){
         return "test/query";
     }
@@ -85,7 +76,7 @@ public class TestController {
      * @author xuminghua 2016/05/13
      * @return
      */
-//    @RequestMapping(value = "/v1/test/query_order_status", method= RequestMethod.POST)
+    @RequestMapping(value = "/v1/test/query_order_status", method= RequestMethod.POST)
     public String queryOrder(String payChannel, String payProduct, String orderNumber, Model model){
 
 

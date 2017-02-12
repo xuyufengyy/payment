@@ -2,7 +2,7 @@
  * @(#)PayCallbackLogDao.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.repository;
 
@@ -10,9 +10,9 @@ import com.payment.domain.PayCallbackLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Dto - 支付回调日志
+ * Dao - 支付回调日志
  *
- * @author	xuminghua 2016/5/13
+ * @author	Xu minghua 2017/02/12
  * @version	1.0 
  */
 public interface PayCallbackLogDao extends JpaRepository<PayCallbackLog, Long> {

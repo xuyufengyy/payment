@@ -2,7 +2,7 @@
  * @(#)LogService.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.service.log;
 
@@ -17,13 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 
 /**
  * Service - 支付日志
  *
- * @author	xuminghua 2016/5/13
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 @Service
@@ -74,7 +73,6 @@ public class LogService {
     @Transactional
     public PayLog save(String payChannel, String payProduct, String orderNumber, Long amount, String content, String payCallbackUrl, String parameter){
         PayLog payLog = new PayLog();
-        payLog.setState(0);
         payLog.setPayChannel(payChannel);
         payLog.setPayProduct(payProduct);
         payLog.setOrderNumber(orderNumber);
@@ -116,7 +114,6 @@ public class LogService {
     @Transactional
     public void savePayCallbackLog(String payProduct, String orderNumber, String parameter){
         PayCallbackLog payCallbackLog = new PayCallbackLog();
-        payCallbackLog.setState(0);
         payCallbackLog.setPayProduct(payProduct);
         payCallbackLog.setOrderNumber(orderNumber);
         payCallbackLog.setParameters(parameter);
@@ -176,7 +173,6 @@ public class LogService {
     public void savePayResultLog(String payChannel, String payProduct, String orderNumber, Long amount, String content, String parameter,
                                  Integer isSuccess, String errorCode, String errorDescription, Integer type){
         PayResultLog payResultLog = new PayResultLog();
-        payResultLog.setState(0);
         payResultLog.setPayChannel(payChannel);
         payResultLog.setPayProduct(payProduct);
         payResultLog.setOrderNumber(orderNumber);

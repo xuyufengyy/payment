@@ -11,40 +11,53 @@
             width: 400px;
             height: 35px;
         }
+        table th {
+            text-align: right;
+        }
+        input {
+            background-color: #eeeeee;
+            border: 0px;
+        }
     </style>
 </head>
 <body>
-<div class="mright">
+<div>
     <h3>首次支付请求参数加密</h3>
-    <div class="mrmain">
-        <form name="subForm" action="/v1/test/encryption" method="get" style="margin:0px">
+    <div>
+        <form name="subForm" action="/v1/test/encryption" method="get">
             <table>
-                <tbody>
+                <tr>
+                    <th>支付渠道【payChannel】：</th>
+                    <td ><input type="text" name="payChannel" value="03" /> <span>*</span></td>
+                </tr>
+                <tr>
+                    <th>支付产品【payProduct】：</th>
+                    <td ><input type="text" name="payProduct" value="03" /> <span>*</span></td>
+                </tr>
                 <tr>
                     <th>订单号【orderNumber】：</th>
-                    <td ><input type="text" class="wtxt" name="orderNumber" value=""/> <span>*</span></td>
+                    <td ><input type="text" name="orderNumber" value="" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>订单金额【amount】：</th>
-                    <td ><input style="background:#ADADAD" readonly type="text" class="wtxt" name="amount" value="0.01"/> <span>*</span></td>
+                    <td ><input readonly type="text" name="amount" value="0.01" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>描述【content】：</th>
-                    <td><input style="background:#ADADAD" type="text" class="wtxt" name="content" value="订单支付"/></td>
+                    <td><input type="text" name="content" value="订单支付" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>支付回调地址【payCallbackUrl】：</th>
-                    <td><input style="background:#ADADAD" class="wtxt" name="payCallbackUrl" /> <span>*</span></td>
+                    <td><input name="payCallbackUrl" value="" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>参数【map】：</th>
-                    <td><input style="background:#ADADAD" type="text" class="wtxt" name="parameters" /> <span>*</span></td>
+                    <td><input type="text" name="parameters" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th></th>
-                    <td><div class="pbutton2 pline"><input type="submit" value="提交" class="button" /></div></td>
+                    <td><input type="submit" value="提交" style="background-color: #e30045;" /></td>
                 </tr>
-                </tbody>
             </table>
         </form>
     </div>

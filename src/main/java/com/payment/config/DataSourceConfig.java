@@ -2,7 +2,7 @@
  * @(#)DataSourceConfig.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.config;
 
@@ -13,12 +13,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import javax.sql.DataSource;
 
 
 /**
  * HikariCP连接池配置
+ *
+ * @author	Xu minghua 2017/02/12
+ * @version	1.0
  */
 @Configuration
 public class DataSourceConfig {

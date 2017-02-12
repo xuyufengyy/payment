@@ -2,7 +2,7 @@
  * @(#)PayLog.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.domain;
 
@@ -11,18 +11,15 @@ import javax.persistence.*;
 /**
  * Entity - 支付日志
  *
- * @author	xuminghua 2016/5/11
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 @Entity
-@Table(name = "ex_pay_log")
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "ex_pay_log_sequence")
+@Table(name = "pay_log")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "pay_log_sequence")
 public class PayLog extends BaseEntity{
 
     private static final long serialVersionUID = 1427491389928068090L;
-
-    /** 状态 0 正常 1删除 */
-    private Integer state;
 
     /** 支付渠道 01 ios客户端， 02 android客户端， 03 wap，04 web */
     private String payChannel;
@@ -44,24 +41,6 @@ public class PayLog extends BaseEntity{
 
     /** 可选参数 json键值对 */
     private String payParameter;
-
-    /**
-     * 获取 状态
-     * @return 状态
-     */
-    @Column(columnDefinition="INT default 0")
-    public Integer getState() {
-        return state;
-    }
-
-    /**
-     * 设置 状态
-     * @param state
-     *          状态
-     */
-    public void setState(Integer state) {
-        this.state = state;
-    }
 
     /**
      * 获取 支付渠道

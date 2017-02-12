@@ -1,15 +1,16 @@
 /**
- * @(#)SysSettingService.java
+ * @(#)PaySettingService.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.service.setting;
 
 import com.google.gson.Gson;
 import com.payment.domain.PayLog;
+import com.payment.domain.PaySetting;
 import com.payment.repository.PayLogDao;
-import com.payment.repository.SysSettingDao;
+import com.payment.repository.PaySettingDao;
 import com.payment.utils.Base64;
 import com.payment.utils.DesUtils;
 import com.payment.utils.Tool;
@@ -18,23 +19,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.net.URLEncoder;
 import java.util.Map;
 
 /**
- * Service - 系统设置
+ * Service - 支付设置
  *
- * @author	xuminghua 16/03/16
+ * @author	Xu minghua 2017/02/12
  * @version	1.0 
  */
 @Service
-public class SysSettingService {
+public class PaySettingService {
 
-    private static Logger logger = LoggerFactory.getLogger(SysSettingService.class);
+    private static Logger logger = LoggerFactory.getLogger(PaySettingService.class);
 
     @Autowired
-    private SysSettingDao sysSettingDao;
+    private PaySettingDao paySettingDao;
 
     @Autowired
     private PayLogDao payLogDao;
@@ -48,18 +48,34 @@ public class SysSettingService {
      */
     @Transactional(readOnly = true)
     public Map<String, String> findByPropertyKeyAndIsActiveAndState(String propertyKey, Integer isActive, Integer state){
-        Map<String, Object> map = sysSettingDao.findByPropertyKeyAndIsActiveAndState(propertyKey, isActive, state);
-        if(!map.isEmpty()){
-            String propertyValue = map.get("propertyValue").toString();
+        PaySetting paySetting = paySettingDao.findByPropertyKeyAndIsActive(propertyKey, isActive);
+        if(paySetting != null){
             Gson gson = new Gson();
-            return gson.fromJson(propertyValue, Map.class);
+            return gson.fromJson(paySetting.getPropertyValue(), Map.class);
         }
         return null;
     }
 
     /**
+     * 加密--生成请求参数串
+     * @param beforEncryptionText 待加密参数串
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public String encryption(String beforEncryptionText){
+        logger.info("beforEncryptionText:" + beforEncryptionText);
+        Map<String, String> map = this.findByPropertyKeyAndIsActiveAndState("pay", 1, 0);
+        String secretKey = map.get("secretKey");
+        byte[] enk = DesUtils.hex(secretKey);
+        byte[] encoded = DesUtils.encryptMode(enk, beforEncryptionText.getBytes());
+        String encryptionText = Base64.encode(encoded);
+        logger.info("String after encryption 加密:" + encryptionText);
+        return encryptionText;
+    }
+
+    /**
      * 解密--生成请求参数串
-     * @param encryptionText 加密参数传
+     * @param encryptionText 加密参数串
      * @return
      */
     @Transactional(readOnly = true)

@@ -2,7 +2,7 @@
  * @(#)PaymentService.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.route;
 
@@ -14,14 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Hashtable;
 import java.util.Map;
 
 /**
  * Service - 统一支付
  *
- * @author	xuminghua 2016/5/12
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 @Service

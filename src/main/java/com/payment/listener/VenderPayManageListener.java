@@ -2,7 +2,7 @@
  * @(#)VenderPayManageListener.java
  * Description:
  * Version :	1.0
- * Copyright:	Copyright (c) 苗方清颜 版权所有
+ * Copyright:	Copyright (c) Xu minghua 版权所有
  */
 package com.payment.listener;
 
@@ -12,13 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-
 import java.util.HashMap;
 
 /**
+ * 项目启动时,绑定VenderPayService
  *
- *
- * @author	xuminghua 2016/7/21
+ * @author	Xu minghua 2017/02/12
  * @version	1.0
  */
 public class VenderPayManageListener implements ApplicationListener<ContextRefreshedEvent> {
