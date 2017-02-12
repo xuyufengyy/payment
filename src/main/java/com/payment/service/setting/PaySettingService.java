@@ -97,7 +97,7 @@ public class PaySettingService {
      */
     @Transactional(readOnly = true)
     public String payCallbackUrl(String orderNumber){
-        PayLog payLog = payLogDao.findByOrderNumberAndState(orderNumber, 0);
+        PayLog payLog = payLogDao.findByOrderNumber(orderNumber);
         String payCallbackUrl = payLog.getPayCallbackUrl();
         Map<String, String> map = this.findByPropertyKeyAndIsActiveAndState("pay", 1, 0);
         String secretKey = map.get("secretKey");

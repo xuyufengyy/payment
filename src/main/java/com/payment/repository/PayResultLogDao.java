@@ -21,8 +21,7 @@ public interface PayResultLogDao extends JpaRepository<PayResultLog, Long> {
      * 查询支付结果日志
      * @param orderNumber 订单号
      * @param type 日志状态 0 支付 1 回调
-     * @param state 删除标志
      * @return PayResultLog
      */
-    PayResultLog findByOrderNumberAndTypeAndState(String orderNumber, Integer type, Integer state);
+    PayResultLog findByOrderNumberAndType(String orderNumber, Integer type);
 }

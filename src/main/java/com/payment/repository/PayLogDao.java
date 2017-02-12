@@ -20,8 +20,7 @@ public interface PayLogDao extends JpaRepository<PayLog, Long>{
     /**
      * 查询支付日志
      * @param orderNumber 订单号
-     * @param state 删除标志
      * @return PayLog
      */
-    PayLog findByOrderNumberAndState(String orderNumber, Integer state);
+    PayLog findByOrderNumber(String orderNumber);
 }

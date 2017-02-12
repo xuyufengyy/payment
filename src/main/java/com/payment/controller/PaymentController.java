@@ -45,7 +45,7 @@ public class PaymentController {
     private boolean payFlag;
 
     @Autowired
-    private PaySettingService sysSettingService;
+    private PaySettingService paySettingService;
 
     @Autowired
     private PaymentService paymentService;
@@ -75,7 +75,7 @@ public class PaymentController {
 //        String payProduct = paramters2.get("payProduct").toString();
 
         //解密--生成请求参数串
-        String decryptText = sysSettingService.decrypt(encryptionText);
+        String decryptText = paySettingService.decrypt(encryptionText);
 
         Map<String, Object> map = Tool.stringConvertMap(decryptText, null);
         logger.info("map===============" + map.toString());
@@ -143,13 +143,13 @@ public class PaymentController {
         PayCallback payCallback = paymentService.payCallback(payChannel, payProduct, "订单支付回调", map);
 
         if(payCallback.isSuccess()){
-            String updateOrderUrl = sysSettingService.payCallbackUrl(payOrderSn);
+            String updateOrderUrl = paySettingService.payCallbackUrl(payOrderSn);
             return "redirect:" + updateOrderUrl;
         }else{
             //回调失败后，调用查询接口
             QueryOrderStatus queryOrderStatus = paymentService.queryOrderStatus(payChannel, payProduct, payOrderSn);
             if(queryOrderStatus.isSuccess()){
-                String updateOrderUrl = sysSettingService.payCallbackUrl(payOrderSn);
+                String updateOrderUrl = paySettingService.payCallbackUrl(payOrderSn);
                 return "redirect:" + updateOrderUrl;
             }
         }

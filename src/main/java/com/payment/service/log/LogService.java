@@ -51,7 +51,7 @@ public class LogService {
      */
     @Transactional
     public void payLog(String payChannel, String payProduct, String orderNumber, Long amount, String content, String payCallbackUrl, String parameter){
-        PayLog payLog = payLogDao.findByOrderNumberAndState(orderNumber, 0);
+        PayLog payLog = payLogDao.findByOrderNumber(orderNumber);
         if (payLog == null) {
             save(payChannel, payProduct, orderNumber, amount, content, payCallbackUrl, parameter);
         }else{
@@ -93,7 +93,7 @@ public class LogService {
      */
     @Transactional
     public void payCallbackLog(String payProduct, String orderNumber, String parameter){
-        PayCallbackLog payCallbackLog = payCallbackLogDao.findByOrderNumberAndState(orderNumber, 0);
+        PayCallbackLog payCallbackLog = payCallbackLogDao.findByOrderNumber(orderNumber);
         if (payCallbackLog == null) {
             savePayCallbackLog(payProduct, orderNumber, parameter);
         } else {
@@ -137,7 +137,7 @@ public class LogService {
     @Transactional
     public void payResultLog(String payChannel, String payProduct, String orderNumber, Long amount, String content, String parameter,
                                  Integer isSuccess, String errorCode, String errorDescription, Integer type){
-        PayResultLog payResultLog = payResultLogDao.findByOrderNumberAndTypeAndState(orderNumber, type, 0);
+        PayResultLog payResultLog = payResultLogDao.findByOrderNumberAndType(orderNumber, type);
         if (payResultLog == null) {
             savePayResultLog(payChannel, payProduct, orderNumber, amount, content, parameter, isSuccess, errorCode, errorDescription, type);
         } else {

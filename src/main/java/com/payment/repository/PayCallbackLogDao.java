@@ -20,8 +20,7 @@ public interface PayCallbackLogDao extends JpaRepository<PayCallbackLog, Long> {
     /**
      * 查询支付回调日志
      * @param orderNumber 订单号
-     * @param state 删除标志
      * @return PayLog
      */
-    PayCallbackLog findByOrderNumberAndState(String orderNumber, Integer state);
+    PayCallbackLog findByOrderNumber(String orderNumber);
 }
