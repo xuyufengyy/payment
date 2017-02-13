@@ -4,23 +4,20 @@
  * Version :	1.0
  * Copyright:	Copyright (c) Xu minghua 版权所有
  */
-package com.payment.service.setting;
+package com.payment.service.common;
 
-import com.google.gson.Gson;
 import com.payment.domain.PayLog;
-import com.payment.domain.PaySetting;
 import com.payment.repository.PayLogDao;
-import com.payment.repository.PaySettingDao;
 import com.payment.utils.Base64;
 import com.payment.utils.DesUtils;
 import com.payment.utils.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.net.URLEncoder;
-import java.util.Map;
 
 /**
  * Service - 支付设置
@@ -29,32 +26,16 @@ import java.util.Map;
  * @version	1.0 
  */
 @Service
-public class PaySettingService {
+public class CommonService {
 
-    private static Logger logger = LoggerFactory.getLogger(PaySettingService.class);
+    private static Logger logger = LoggerFactory.getLogger(CommonService.class);
 
-    @Autowired
-    private PaySettingDao paySettingDao;
+    @Value("${pay.secret.key}")
+    private String secretKey;
 
     @Autowired
     private PayLogDao payLogDao;
 
-    /**
-     * 查询系统设置
-     * @param propertyKey 键
-     * @param isActive 是否生效
-     * @param state 删除标识
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public Map<String, String> findByPropertyKeyAndIsActiveAndState(String propertyKey, Integer isActive, Integer state){
-        PaySetting paySetting = paySettingDao.findByPropertyKeyAndIsActive(propertyKey, isActive);
-        if(paySetting != null){
-            Gson gson = new Gson();
-            return gson.fromJson(paySetting.getPropertyValue(), Map.class);
-        }
-        return null;
-    }
 
     /**
      * 加密--生成请求参数串
@@ -64,8 +45,6 @@ public class PaySettingService {
     @Transactional(readOnly = true)
     public String encryption(String beforEncryptionText){
         logger.info("beforEncryptionText:" + beforEncryptionText);
-        Map<String, String> map = this.findByPropertyKeyAndIsActiveAndState("pay", 1, 0);
-        String secretKey = map.get("secretKey");
         byte[] enk = DesUtils.hex(secretKey);
         byte[] encoded = DesUtils.encryptMode(enk, beforEncryptionText.getBytes());
         String encryptionText = Base64.encode(encoded);
@@ -81,8 +60,6 @@ public class PaySettingService {
     @Transactional(readOnly = true)
     public String decrypt(String encryptionText){
         logger.info("encryptionText:" + encryptionText);
-        Map<String, String> map = this.findByPropertyKeyAndIsActiveAndState("pay", 1, 0);
-        String secretKey = map.get("secretKey");
         byte[] enk = DesUtils.hex(secretKey);
         byte[] decryptBytes = Base64.decode(encryptionText);
         String decryptText = new String(DesUtils.decryptMode(enk, decryptBytes));
@@ -99,8 +76,6 @@ public class PaySettingService {
     public String payCallbackUrl(String orderNumber){
         PayLog payLog = payLogDao.findByOrderNumber(orderNumber);
         String payCallbackUrl = payLog.getPayCallbackUrl();
-        Map<String, String> map = this.findByPropertyKeyAndIsActiveAndState("pay", 1, 0);
-        String secretKey = map.get("secretKey");
         byte[] enk = DesUtils.hex(secretKey);
         byte[] encoded = DesUtils.encryptMode(enk, orderNumber.getBytes());
         String encryptionText = Base64.encode(encoded);

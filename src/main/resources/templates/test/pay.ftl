@@ -6,29 +6,37 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <title>支付测试</title>
+    <style>
+        input{
+            width: 400px;
+            height: 35px;
+        }
+        table th {
+            text-align: right;
+        }
+        input {
+            background-color: #eeeeee;
+            border: 0px;
+        }
+    </style>
 </head>
 <body>
-<div class="mright">
+<div >
     <h3>首次支付请求</h3>
-    <div class="mrmain">
-        <form name="subForm" action="/payment/generate_pay_url" method="get" style="margin:0px">
+    <div>
+        <form name="subForm" action="/payment/generate_pay_url" method="get">
             <table>
                 <tbody>
                 <tr>
-                    <th>支付渠道【payChannel】:</th>
-                    <td><input style="background:#ADADAD" type=text class="wtxt" name="payChannel" value="03"/> <span>*</span></td>
-                </tr>
-                <tr>
-                    <th>支付产品【payProduct】：</th>
-                    <td><input style="background:#ADADAD" type=text class="wtxt" name="payProduct" value="03"/> <span>*</span></td>
-                </tr>
-                <tr>
                     <th>加密后参数【encryptionText】:</th>
-                    <td><input style="background:#ADADAD" type=text class="wtxt" readonly name="encryptionText" value="${encryptionText}"/> <span>*</span></td>
+                    <td>
+                        <input type="hidden" name="encryptionText" value="${encryptionText}" />
+                        <textarea readonly cols="40" rows="10" style="resize: none;">${encryptionText}</textarea>
+                    </td>
                 </tr>
                 <tr>
                     <th></th>
-                    <td><div class="pbutton2 pline"><input type="submit" value="提交" class="button" /></div></td>
+                    <td><input type="submit" value="提交" style="background-color: #e30045;" /></td>
                 </tr>
                 </tbody>
             </table>

@@ -11,7 +11,7 @@ import com.payment.domain.paybean.PayCallback;
 import com.payment.domain.paybean.PayParameter;
 import com.payment.domain.paybean.QueryOrderStatus;
 import com.payment.route.PaymentService;
-import com.payment.service.setting.PaySettingService;
+import com.payment.service.common.CommonService;
 import com.payment.utils.Tool;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -24,9 +24,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -44,7 +41,7 @@ public class PaymentController {
     private String umpayWapPayUrl;
 
     @Autowired
-    private PaySettingService paySettingService;
+    private CommonService commonService;
 
     @Autowired
     private PaymentService paymentService;
@@ -69,7 +66,7 @@ public class PaymentController {
         String encryptionText = paramters.get("encryptionText").toString();
 
         //解密--生成请求参数串
-        String decryptText = paySettingService.decrypt(encryptionText);
+        String decryptText = commonService.decrypt(encryptionText);
 
         Map<String, Object> map = Tool.stringConvertMap(decryptText, null);
         logger.info("map===============" + map.toString());
@@ -114,13 +111,13 @@ public class PaymentController {
         PayCallback payCallback = paymentService.payCallback(payChannel, payProduct, "订单支付回调", map);
 
         if(payCallback.isSuccess()){
-            String updateOrderUrl = paySettingService.payCallbackUrl(payOrderSn);
+            String updateOrderUrl = commonService.payCallbackUrl(payOrderSn);
             return "redirect:" + updateOrderUrl;
         }else{
             //回调失败后，调用查询接口
             QueryOrderStatus queryOrderStatus = paymentService.queryOrderStatus(payChannel, payProduct, payOrderSn);
             if(queryOrderStatus.isSuccess()){
-                String updateOrderUrl = paySettingService.payCallbackUrl(payOrderSn);
+                String updateOrderUrl = commonService.payCallbackUrl(payOrderSn);
                 return "redirect:" + updateOrderUrl;
             }
         }

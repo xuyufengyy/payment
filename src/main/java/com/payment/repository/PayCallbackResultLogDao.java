@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PayCallbackResultLogDao extends JpaRepository<PayCallbackResultLog, Long> {
 
     /**
-     * 查询支付结果日志
+     * 查询支付回调结果日志
      * @param orderNumber 订单号
      * @return PayCallbackResultLog
      */

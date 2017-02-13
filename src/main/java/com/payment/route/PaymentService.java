@@ -11,6 +11,8 @@ import com.payment.domain.paybean.*;
 import com.payment.service.VenderPayService;
 import com.payment.service.log.LogService;
 import com.payment.utils.Tool;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,7 @@ public class PaymentService {
         String amount = payParameter.getAmount();
         String content = payParameter.getContent();
         String payCallbackUrl = payParameter.getPayCallbackUrl();
-        Map<String, Object> parameters = payParameter.getParameters();
+        String parameters = payParameter.getParameters();
 
         //将元转成分
         BigDecimal actualAmount = new BigDecimal(amount);
@@ -79,12 +81,11 @@ public class PaymentService {
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        Object object = parameters.get("parameters");
-        if(object != null && !"".equals(object) && !"null".equals(object)){
-            map = (Map) object;
+        if(StringUtils.isNotBlank(parameters)){
+            map = gson.fromJson(parameters, Map.class);
         }
 
-        logService.payLog(payChannel, payProduct, orderNumber, totalAmount, content, payCallbackUrl, gson.toJson(map));
+        logService.savePayLog(payChannel, payProduct, orderNumber, totalAmount, content, payCallbackUrl, parameters);
 
         GeneratePayUrl generatePayUrl = new GeneratePayUrl();
         VenderGeneratePayUrl venderGeneratePayUrl = new VenderGeneratePayUrl();
@@ -109,8 +110,8 @@ public class PaymentService {
             generatePayUrl.setPayProduct(venderGeneratePayUrl.getPayProduct());
             generatePayUrl.getParameters().putAll(venderGeneratePayUrl.getParameters());
 
-            logService.payResultLog(payChannel, payProduct, orderNumber, totalAmount, content, gson.toJson(venderGeneratePayUrl.getParameters()),
-                    generatePayUrl.isSuccess() ? 1 : 0, generatePayUrl.getErrorCode(), generatePayUrl.getErrorText(), 0);
+            logService.savePayResultLog(payChannel, payProduct, orderNumber, totalAmount, content, gson.toJson(venderGeneratePayUrl.getParameters()),
+                    generatePayUrl.isSuccess() ? 1 : 0, generatePayUrl.getErrorCode(), generatePayUrl.getErrorText());
         }else {
             generatePayUrl.setSuccess(false);
             generatePayUrl.setErrorCode("666");
@@ -157,7 +158,9 @@ public class PaymentService {
      */
     public PayCallback payCallback(String payChannel, String payProduct, String content, Map<String, Object> map) {
 
-        logService.payCallbackLog(payProduct, map.get("order_id").toString(), gson.toJson(map));
+        logService.savePayCallbackLog(payProduct, map.get("order_id").toString(), gson.toJson(map));
+
+        //支付渠道,支付产品为透传参数,不参加验签
         map.remove("payChannel");
         map.remove("payProduct");
 
@@ -174,8 +177,8 @@ public class PaymentService {
                 ex.printStackTrace();
             }
 
-            logService.payResultLog(payChannel, payProduct, payCallback.getOrderNumber(), amount, content, gson.toJson(payCallback.getParameters()),
-                    payCallback.isSuccess() ? 1 : 0, payCallback.getErrorCode(), payCallback.getErrorText(), 1);
+            logService.savePayCallbackResultLog(payChannel, payProduct, payCallback.getOrderNumber(), amount, content, gson.toJson(payCallback.getParameters()),
+                    payCallback.isSuccess() ? 1 : 0, payCallback.getErrorCode(), payCallback.getErrorText());
         }else {
             payCallback.setSuccess(false);
             payCallback.setErrorCode("666");

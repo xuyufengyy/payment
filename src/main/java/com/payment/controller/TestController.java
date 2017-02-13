@@ -9,7 +9,7 @@ package com.payment.controller;
 import com.payment.domain.paybean.PayParameter;
 import com.payment.domain.paybean.QueryOrderStatus;
 import com.payment.route.PaymentService;
-import com.payment.service.setting.PaySettingService;
+import com.payment.service.common.CommonService;
 import com.payment.utils.Tool;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -38,18 +37,18 @@ public class TestController {
     private PaymentService paymentService;
 
     @Autowired
-    private PaySettingService sysSettingService;
+    private CommonService commonService;
 
-    @RequestMapping(value = "/test/pay", method= RequestMethod.GET)
+    @RequestMapping(value = "/test/index", method= RequestMethod.GET)
     public String pay(){
-        return "test/encryption";
+        return "test/index";
     }
 
     /**
      * 支付--将支付参数加密
      * @return
      */
-    @RequestMapping(value = "/test/encryption", method= RequestMethod.GET)
+    @RequestMapping(value = "/test/encryption", method= RequestMethod.POST)
     public String encryption(PayParameter payParameter, Model model){
 
         Map<String, String> map = Tool.transBean2Map(payParameter);
@@ -61,7 +60,7 @@ public class TestController {
         }
 
         //加密
-        String encryptionText = sysSettingService.encryption(urlParamter);
+        String encryptionText = commonService.encryption(urlParamter);
         logger.info("Encrypted string:" + encryptionText);
 
         model.addAttribute("encryptionText", encryptionText);

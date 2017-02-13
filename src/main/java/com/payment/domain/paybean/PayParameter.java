@@ -6,9 +6,6 @@
  */
 package com.payment.domain.paybean;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Entity - 支付入参
  *
@@ -35,8 +32,8 @@ public class PayParameter {
     /** 支付回调地址 */
     private String payCallbackUrl;
 
-    /** 参数内容 */
-    private Map<String, Object> parameters = new HashMap<>();
+    /** 参数内容json */
+    private String parameters;
 
     public String getPayChannel() {
         return payChannel;
@@ -86,11 +83,11 @@ public class PayParameter {
         this.payCallbackUrl = payCallbackUrl;
     }
 
-    public Map<String, Object> getParameters() {
+    public String getParameters() {
         return parameters;
     }
 
-    public void setParameters(Map<String, Object> parameters) {
+    public void setParameters(String parameters) {
         this.parameters = parameters;
     }
 }

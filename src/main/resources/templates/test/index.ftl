@@ -24,7 +24,7 @@
 <div>
     <h3>首次支付请求参数加密</h3>
     <div>
-        <form name="subForm" action="/test/encryption" method="get">
+        <form name="subForm" action="/test/encryption" method="post">
             <table>
                 <tr>
                     <th>支付渠道【payChannel】：</th>
@@ -51,7 +51,7 @@
                     <td><input name="payCallbackUrl" value="" /> <span>*</span></td>
                 </tr>
                 <tr>
-                    <th>参数【map】：</th>
+                    <th>参数gson【parameters】：</th>
                     <td><input type="text" name="parameters" /> <span>*</span></td>
                 </tr>
                 <tr>
