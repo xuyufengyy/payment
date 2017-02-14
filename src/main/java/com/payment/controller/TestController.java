@@ -63,20 +63,20 @@ public class TestController {
         String encryptionText = commonService.encryption(urlParamter);
         logger.info("Encrypted string:" + encryptionText);
 
-        model.addAttribute("encryptionText", encryptionText);
-        return "test/pay";
+        String url = "/payment/generate_pay_url?" + encryptionText;
+        return "redirect:" + url;
     }
 
-    @RequestMapping(value = "/test/query", method= RequestMethod.GET)
+    @RequestMapping(value = "/test/query_now", method= RequestMethod.GET)
     public String query(){
-        return "test/query";
+        return "test/query_now";
     }
 
     /**
-     * 支付--订单状态查询
+     * 支付--订单状态查询(当日订单)
      * @return
      */
-    @RequestMapping(value = "/test/query_order_status", method= RequestMethod.POST)
+    @RequestMapping(value = "/test/query_order_status_now", method= RequestMethod.POST)
     public String queryOrder(String payChannel, String payProduct, String orderNumber, Model model){
 
 

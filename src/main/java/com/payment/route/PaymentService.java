@@ -124,7 +124,7 @@ public class PaymentService {
      * 订单状态查询
      * @param payChannel        支付渠道标识
      * @param payProduct        支付产品标识
-     * @param payOrderSn       订单号
+     * @param payOrderSn        订单号
      * @return 订单状态
      */
     public QueryOrderStatus queryOrderStatus(String payChannel, String payProduct, String payOrderSn) {

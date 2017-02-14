@@ -54,16 +54,12 @@ public class PaymentController {
     public String generatePayUrl(HttpServletRequest request, Model model){
 
         //获取参数
-        String urlParamter = request.getQueryString();
-        logger.info("String before encryption:" + urlParamter);
-        if(StringUtils.isBlank(urlParamter)){
+        String encryptionText = request.getQueryString();
+        logger.info("String before encryption:" + encryptionText);
+        if(StringUtils.isBlank(encryptionText)){
             model.addAttribute("message", "加密参数不存在");
             return "payment/pay_error";
         }
-
-        //将字符串转成map
-        Map<String, Object> paramters = Tool.stringConvertMap(urlParamter, Tool.getInputCharset());
-        String encryptionText = paramters.get("encryptionText").toString();
 
         //解密--生成请求参数串
         String decryptText = commonService.decrypt(encryptionText);

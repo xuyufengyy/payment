@@ -6,29 +6,42 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <title>支付测试</title>
+    <style>
+        input{
+            width: 400px;
+            height: 35px;
+        }
+        table th {
+            text-align: right;
+        }
+        input {
+            background-color: #eeeeee;
+            border: 0px;
+        }
+    </style>
 </head>
 <body>
 <div>
     <h3>查询订单</h3>
     <div>
-        <form name="subForm" action="/v1/test/query_order_status" method="post" style="margin:0px">
+        <form name="subForm" action="/test/query_order_status_now" method="post">
             <table>
                 <tbody>
                 <tr>
                     <th>支付渠道【payChannel】:</th>
-                    <td><input style="background:#ADADAD" type=text name="payChannel" value="03"/> <span>*</span></td>
+                    <td><input type=text name="payChannel" value="" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>支付产品【payProduct】：</th>
-                    <td><input style="background:#ADADAD" type=text name="payProduct" value="03"/> <span>*</span></td>
+                    <td><input type=text name="payProduct" value="" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th>订单号【orderNumber】：</th>
-                    <td ><input type="text" name="orderNumber" value=""/> <span>*</span></td>
+                    <td ><input type="text" name="orderNumber" value="" /> <span>*</span></td>
                 </tr>
                 <tr>
                     <th></th>
-                    <td><div class="pbutton2 pline"><input type="submit" value="提交" class="button" /></div></td>
+                    <td><input type="submit" value="提交" style="background-color: #e30045;" /></td>
                 </tr>
                 </tbody>
             </table>
