@@ -142,4 +142,24 @@ public class LogService {
         payCallbackResultLogDao.save(payCallbackResultLog);
         logger.info(" save pay callback result log success ! ");
     }
+
+    /**
+     * 查询订单是否支付成功
+     * @param orderNumber           订单号
+     * return true 支付成功 false 支付失败
+     */
+    @Transactional(readOnly = true)
+    public boolean findPayCallbackResultLog(String orderNumber){
+        PayCallbackResultLog payCallbackResultLog = payCallbackResultLogDao.findByOrderNumber(orderNumber);
+        if(payCallbackResultLog != null){
+            int isSuccess = payCallbackResultLog.getIsSuccess();
+            if(isSuccess == 0){
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
 }

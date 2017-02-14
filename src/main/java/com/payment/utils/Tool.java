@@ -144,7 +144,7 @@ public class Tool {
      * @param params 需要排序并参与字符拼接的参数组
      * @return 拼接后字符串
      */
-    public static String createLinkString(Map<String, String> params, String sign) {
+    public static String createLinkString(Map<String, String> params) {
 
         List<String> keys = new ArrayList<String>(params.keySet());
         Collections.sort(keys);

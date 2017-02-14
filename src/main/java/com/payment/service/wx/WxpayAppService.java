@@ -4,7 +4,7 @@
  * Version :	1.0
  * Copyright:	Copyright (c) Xu minghua 版权所有
  */
-package com.payment.service.umpay;
+package com.payment.service.wx;
 
 import com.payment.domain.paybean.*;
 import com.payment.service.VenderPayService;
@@ -14,6 +14,7 @@ import com.payment.utils.Tool;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.map.ListOrderedMap;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -28,44 +29,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Encoder;
+
 import java.net.URLEncoder;
+import java.security.MessageDigest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
- * Service - 联动优势wap支付
+ * Service - 微信app支付
  *
- * @author	Xu minghua 2017/02/12
+ * @author	Xu minghua 2017/02/14
  * @version	1.0
  */
 @Service
-public class UmpayWapService implements VenderPayService {
+public class WxpayAppService implements VenderPayService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UmpayWapService.class);
+    private static final Logger logger = LoggerFactory.getLogger(WxpayAppService.class);
 
-    @Value("${umpay.wap.mer.id}")
-    private String umpayWapMerId;
+    @Value("${wxpay.app.app.id}")
+    private String wxpayAppAppId;
 
-    @Value("${umpay.wap.sign.type}")
-    private String umpayWapSignType;
+    @Value("${wxpay.app.partner.id}")
+    private String wxpayAppPartnerId;
 
-    @Value("${umpay.wap.notify.url}")
-    private String umpayWapNotifyUrl;
-
-    @Value("${umpay.wap.ret.url}")
-    private String umpayWapRetUrl;
-
-    @Value("${umpay.wap.pay.url.name}")
-    private String umpayWapPayUrl;
+    @Value("${wxpay.app.secret.key}")
+    private String wxpayAppSecretKey;
 
     @Override
     public VenderPayServiceAnnounce getAnnounce() {
-        // TODO Auto-generated method stub
         VenderPayServiceAnnounce venderPayServiceAnnounce = new VenderPayServiceAnnounce();
-        venderPayServiceAnnounce.setPayId("0303");//接口标识，要区分谁调用
+        venderPayServiceAnnounce.setPayId("0102");//接口标识，要区分谁调用
         venderPayServiceAnnounce.setHasCallback(true);//必须回调
-        venderPayServiceAnnounce.setCallbackUrl("0303");
+        venderPayServiceAnnounce.setCallbackUrl("0102");
 
         return venderPayServiceAnnounce;
     }
@@ -77,52 +75,26 @@ public class UmpayWapService implements VenderPayService {
         Map<String, String> params = ListOrderedMap.decorate(new HashMap());
 
         try {
-            venderGeneratePayUrl.setPayChannel("03");
-            venderGeneratePayUrl.setPayProduct("03");
+            venderGeneratePayUrl.setPayChannel("01");
+            venderGeneratePayUrl.setPayProduct("02");
 
-            UmpayWap umpayWap = new UmpayWap();
+            WxpayApp wxpayApp = new WxpayApp();
 
             /** 协议参数 */
-            umpayWap.setService("pay_req_h5_frontpage");
-            umpayWap.setCharset(Tool.getInputCharset());
-            umpayWap.setMer_id(umpayWapMerId);
-            umpayWap.setNotify_url(umpayWapNotifyUrl);
-            umpayWap.setRet_url(umpayWapRetUrl);
-            umpayWap.setVersion("4.0");
+            wxpayApp.setAppid(wxpayAppAppId);
+            wxpayApp.setPartnerid(wxpayAppPartnerId);
+            wxpayApp.setPrepayid(optionalParameter.get("prepay_id"));
+            wxpayApp.setPackage("Sign=WXPay");
+            wxpayApp.setNoncestr(UUID.randomUUID().toString().replace("-", ""));
+            wxpayApp.setTimestamp(String.valueOf(System.currentTimeMillis()));
 
-            /** 业务参数 */
-            umpayWap.setOrder_id(orderNumber);
-            umpayWap.setMer_date(DateUtils.toString(new Date(), "yyyyMMdd"));
-            umpayWap.setAmount(amount.toString());//单位分
-            umpayWap.setAmt_type("RMB");
-            //可选参数
-//            umpayWap.setGoodsId("");
-//            umpayWap.setGoodsInf("");
-//            umpayWap.setCardId("");
-//            umpayWap.setIdentityType("");
-//            umpayWap.setIdentityCode("");
-//            umpayWap.setCardolder("");
-//            umpayWap.setMerCustId("");
-//            umpayWap.setUsrPayAgreementId("");
+            params = Tool.transBean2Map(wxpayApp);
+            String signTemp = Tool.createLinkString(params) + "key=" + wxpayAppSecretKey;
 
-            params = Tool.transBean2Map(umpayWap);
-            ReqData reqDataPost = Mer2Plat_v40.makeReqDataByPost(params);
-            String sign = reqDataPost.getSign(); //显示签名
-            String post_url = reqDataPost.getUrl();   //post请求地址
-            logger.info("----------post_url：" + post_url);
+            String sign = DigestUtils.md5Hex(signTemp.getBytes(Tool.getInputCharset())).toUpperCase();
+            logger.info("**************sign**************：" + sign);
 
-            umpayWap.setNotify_url(URLEncoder.encode(umpayWapNotifyUrl, Tool.getInputCharset()));
-            umpayWap.setRet_url(URLEncoder.encode(umpayWapRetUrl, Tool.getInputCharset()));
-            umpayWap.setSign_type(umpayWapSignType);
-            params = Tool.transBean2Map(umpayWap);
-            String signContent = Tool.createLinkString(params);//数组排序后生成字符串
-
-            sign = URLEncoder.encode(sign, Tool.getInputCharset());
-
-            String parameter = signContent + "&sign=" + sign;
-            logger.info("URLEncoder=========================" + parameter);
-
-            venderGeneratePayUrl.getParameters().put(umpayWapPayUrl, post_url + "?" + parameter);
+            venderGeneratePayUrl.getParameters().put("sign", sign);
             venderGeneratePayUrl.setSuccess(true);
         } catch (Exception e) {
             logger.error("===========VenderGeneratePayUrl Exception !============", e);
@@ -148,7 +120,7 @@ public class UmpayWapService implements VenderPayService {
             /** 协议参数 */
             umpayWap.setService("query_order");
             umpayWap.setCharset(Tool.getInputCharset());
-            umpayWap.setMer_id(umpayWapMerId);
+//            umpayWap.setMer_id(umpayWapMerId);
             umpayWap.setVersion("4.0");
 
             /** 业务参数 */
@@ -161,7 +133,7 @@ public class UmpayWapService implements VenderPayService {
             String post_url = reqDataPost.getUrl();   //post请求地址
             System.out.println("----------post请求方式："+post_url);
 
-            umpayWap.setSign_type(umpayWapSignType);
+//            umpayWap.setSign_type(umpayWapSignType);
             params = Tool.transBean2Map(umpayWap);
             String signContent = Tool.createLinkString(params);//数组排序后生成字符串
 

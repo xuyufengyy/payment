@@ -52,7 +52,7 @@ public class TestController {
     public String encryption(PayParameter payParameter, Model model){
 
         Map<String, String> map = Tool.transBean2Map(payParameter);
-        String urlParamter = Tool.createLinkString(map, "&");//数组排序后生成字符串
+        String urlParamter = Tool.createLinkString(map);//数组排序后生成字符串
         logger.info("String before encryption:" + urlParamter);
         if(StringUtils.isBlank(urlParamter)){
             model.addAttribute("message", "加密参数不存在");

@@ -14,10 +14,10 @@ package com.payment.domain.paybean;
  */
 public class PayParameter {
 
-    /** 支付渠道 01 ios客户端， 02 android客户端， 03 wap，04 web */
+    /** 支付渠道 01 app, 02 web, 03 wap */
     private String payChannel;
 
-    /** 支付产品 00 测试，01 支付宝，02 微支付，03 联动优势收银台 */
+    /** 支付产品 01 支付宝, 02 微支付, 03 联动优势收银台 */
     private String payProduct;
 
     /** 订单号 */

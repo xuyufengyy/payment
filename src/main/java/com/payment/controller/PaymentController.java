@@ -12,6 +12,7 @@ import com.payment.domain.paybean.PayParameter;
 import com.payment.domain.paybean.QueryOrderStatus;
 import com.payment.route.PaymentService;
 import com.payment.service.common.CommonService;
+import com.payment.service.log.LogService;
 import com.payment.utils.Tool;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -45,6 +46,9 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+
+    @Autowired
+    private LogService logService;
 
     /**
      * 支付--生成支付地址
@@ -90,7 +94,7 @@ public class PaymentController {
      * 支付--异步回调
      * @return
      */
-    @RequestMapping(value = "/v1/payment/notify_callback", method= RequestMethod.GET)
+    @RequestMapping(value = "/payment/notify_callback", method= RequestMethod.GET)
     public String notifyCallback(HttpServletRequest request, Model model){
         String urlParamter = request.getQueryString();
         logger.info("notify_callback============urlParamter========="+urlParamter);
@@ -104,17 +108,21 @@ public class PaymentController {
         String payProduct = map.get("payProduct").toString();
         String payOrderSn = map.get("order_id").toString();
 
-        PayCallback payCallback = paymentService.payCallback(payChannel, payProduct, "订单支付回调", map);
+        //查询订单号是否支付成功,如果支付成功就不需要回调
+        boolean isSuccess = logService.findPayCallbackResultLog(payOrderSn);
+        if(!isSuccess){
+            PayCallback payCallback = paymentService.payCallback(payChannel, payProduct, "订单支付回调", map);
 
-        if(payCallback.isSuccess()){
-            String updateOrderUrl = commonService.payCallbackUrl(payOrderSn);
-            return "redirect:" + updateOrderUrl;
-        }else{
-            //回调失败后，调用查询接口
-            QueryOrderStatus queryOrderStatus = paymentService.queryOrderStatus(payChannel, payProduct, payOrderSn);
-            if(queryOrderStatus.isSuccess()){
+            if(payCallback.isSuccess()){
                 String updateOrderUrl = commonService.payCallbackUrl(payOrderSn);
                 return "redirect:" + updateOrderUrl;
+            }else{
+                //回调失败后，调用查询接口
+                QueryOrderStatus queryOrderStatus = paymentService.queryOrderStatus(payChannel, payProduct, payOrderSn);
+                if(queryOrderStatus.isSuccess()){
+                    String updateOrderUrl = commonService.payCallbackUrl(payOrderSn);
+                    return "redirect:" + updateOrderUrl;
+                }
             }
         }
         return "payment/callback_result";
@@ -124,7 +132,7 @@ public class PaymentController {
      * 支付--同步回调
      * @return
      */
-    @RequestMapping(value = "/v1/payment/ret_callback", method= RequestMethod.POST)
+    @RequestMapping(value = "/payment/ret_callback", method= RequestMethod.POST)
     public String retCallback(HttpServletRequest request, Model model){
         String payOrderSn = request.getParameter("order_id");
         logger.info("ret_callback_payOrderSn======"+payOrderSn);
