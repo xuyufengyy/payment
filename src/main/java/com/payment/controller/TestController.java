@@ -63,7 +63,7 @@ public class TestController {
         String encryptionText = commonService.encryption(urlParamter);
         logger.info("Encrypted string:" + encryptionText);
 
-        String url = "/payment/generate_pay_url?" + encryptionText;
+        String url = "/payment/generate_pay?" + encryptionText;
         return "redirect:" + url;
     }
 

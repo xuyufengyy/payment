@@ -6,6 +6,7 @@
  */
 package com.payment.controller;
 
+import com.payment.exception.BaseException;
 import com.payment.domain.paybean.GeneratePayUrl;
 import com.payment.domain.paybean.PayCallback;
 import com.payment.domain.paybean.PayParameter;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -34,6 +36,7 @@ import java.util.Map;
  * @version	1.0
  */
 @Controller
+@RequestMapping("/payment")
 public class PaymentController {
 
     private static Logger logger = LoggerFactory.getLogger(PaymentController.class);
@@ -51,18 +54,18 @@ public class PaymentController {
     private LogService logService;
 
     /**
-     * 支付--生成支付地址
+     * 支付--组装支付请求报文
      * @return
      */
-    @RequestMapping(value = "/payment/generate_pay_url", method= RequestMethod.GET)
-    public String generatePayUrl(HttpServletRequest request, Model model){
+    @ResponseBody
+    @RequestMapping(value = "/generate_pay", method= RequestMethod.GET)
+    public GeneratePayUrl generatePayUrl(HttpServletRequest request){
 
         //获取参数
         String encryptionText = request.getQueryString();
         logger.info("String before encryption:" + encryptionText);
         if(StringUtils.isBlank(encryptionText)){
-            model.addAttribute("message", "加密参数不存在");
-            return "payment/pay_error";
+            throw new BaseException(" Request parameter does not exist ");
         }
 
         //解密--生成请求参数串
@@ -79,28 +82,20 @@ public class PaymentController {
         }
 
         GeneratePayUrl generatePayUrl = paymentService.generatePayUrl(payParameter);
-
-        String url = "";
-        if(generatePayUrl.isSuccess()){
-            url = generatePayUrl.getParameters().get(umpayWapPayUrl).toString();
-        }else{
-            model.addAttribute("message", generatePayUrl.getErrorText());
-            return "payment/pay_error";
-        }
-        return "redirect:"+url;
+        return generatePayUrl;
     }
 
     /**
      * 支付--异步回调
      * @return
      */
-    @RequestMapping(value = "/payment/notify_callback", method= RequestMethod.GET)
-    public String notifyCallback(HttpServletRequest request, Model model){
+    @ResponseBody
+    @RequestMapping(value = "/notify_callback", method= RequestMethod.GET)
+    public String notifyCallback(HttpServletRequest request){
         String urlParamter = request.getQueryString();
         logger.info("notify_callback============urlParamter========="+urlParamter);
         if(StringUtils.isBlank(urlParamter)){
-            model.addAttribute("message", "参数不存在");
-            return "payment/pay_error";
+            throw new BaseException(" Request parameter does not exist ");
         }
 
         Map<String, Object> map = Tool.stringConvertMap(urlParamter, Tool.getInputCharset());
@@ -108,7 +103,7 @@ public class PaymentController {
         String payProduct = map.get("payProduct").toString();
         String payOrderSn = map.get("order_id").toString();
 
-        //查询订单号是否支付成功,如果支付成功就不需要回调
+        //查询订单号是否支付成功,如果支付成功就不需要回调(异步回调多次)
         boolean isSuccess = logService.findPayCallbackResultLog(payOrderSn);
         if(!isSuccess){
             PayCallback payCallback = paymentService.payCallback(payChannel, payProduct, "订单支付回调", map);
@@ -125,14 +120,14 @@ public class PaymentController {
                 }
             }
         }
-        return "payment/callback_result";
+        return null;
     }
 
     /**
      * 支付--同步回调
      * @return
      */
-    @RequestMapping(value = "/payment/ret_callback", method= RequestMethod.POST)
+    @RequestMapping(value = "/ret_callback", method= RequestMethod.POST)
     public String retCallback(HttpServletRequest request, Model model){
         String payOrderSn = request.getParameter("order_id");
         logger.info("ret_callback_payOrderSn======"+payOrderSn);
