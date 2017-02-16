@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -76,19 +77,10 @@ public class TestController {
      * 支付--订单状态查询(当日订单)
      * @return
      */
+    @ResponseBody
     @RequestMapping(value = "/test/query_order_status_now", method= RequestMethod.POST)
-    public String queryOrder(String payChannel, String payProduct, String orderNumber, Model model){
-
-
+    public QueryOrderStatus queryOrder(String payChannel, String payProduct, String orderNumber){
         QueryOrderStatus queryOrderStatus = paymentService.queryOrderStatus(payChannel, payProduct, orderNumber);
-        String message = "";
-        if(queryOrderStatus.isSuccess()){
-            message = "订单支付成功！";
-        }else{
-            message = "订单支付失败！";
-            model.addAttribute("errorCode", queryOrderStatus.getErrorCode());
-        }
-        model.addAttribute("message", message);
-        return "test/query_result";
+        return queryOrderStatus;
     }
 }

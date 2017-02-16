@@ -76,12 +76,10 @@ public class CommonService {
     public String payCallbackUrl(String orderNumber){
         PayLog payLog = payLogDao.findByOrderNumber(orderNumber);
         String payCallbackUrl = payLog.getPayCallbackUrl();
-        byte[] enk = DesUtils.hex(secretKey);
-        byte[] encoded = DesUtils.encryptMode(enk, orderNumber.getBytes());
-        String encryptionText = Base64.encode(encoded);
+        String encryptionText = this.decrypt(orderNumber);
         logger.info("Encrypted string:" + encryptionText);
         try{
-            return payCallbackUrl + "?encryptionText=" + URLEncoder.encode(encryptionText, Tool.getInputCharset());
+            return payCallbackUrl + "?" + URLEncoder.encode(encryptionText, Tool.getInputCharset());
         }catch (Exception ex){
             ex.printStackTrace();
             return null;

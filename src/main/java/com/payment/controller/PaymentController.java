@@ -20,13 +20,13 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -40,9 +40,6 @@ import java.util.Map;
 public class PaymentController {
 
     private static Logger logger = LoggerFactory.getLogger(PaymentController.class);
-
-    @Value("${umpay.wap.pay.url.name}")
-    private String umpayWapPayUrl;
 
     @Autowired
     private CommonService commonService;
@@ -89,7 +86,6 @@ public class PaymentController {
      * 支付--异步回调
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "/notify_callback", method= RequestMethod.GET)
     public String notifyCallback(HttpServletRequest request){
         String urlParamter = request.getQueryString();
@@ -120,7 +116,7 @@ public class PaymentController {
                 }
             }
         }
-        return null;
+        return "payment/pay_success";
     }
 
     /**
